@@ -44,7 +44,7 @@
          String user_pw= request.getParameter("input_pw");
         Statement st = conn.createStatement();
         // 내가 입려한 id와 pw 값이 DB안에 있는지 확인한다
-        String sql = "SELECT * from CUSTOMER where Customer_id = 'jaeminjj'";
+        String sql = "SELECT * from CUSTOMER where Customer_id = '"+user_id+"'AND Password='"+user_pw+"'";
         ResultSet rs = st.executeQuery(sql);
         System.out.println("Success!");
         // isLogin 은 로그인 확인 유무를 위한 변수

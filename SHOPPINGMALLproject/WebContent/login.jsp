@@ -29,14 +29,10 @@
         // 현재 로그인된 아이디가 있다면 (= session에 저장된 id가 있다면)
         else {
             out.print(session.getAttribute("id") + " 님 환영합니다");
+            
             %>
-            <h1> Y&J SHOPPINGMALL </h1> 
-            <br /> <form action="logout.jsp" method="post">
-            <br />
-            <br /> <button> 로그아웃 </button>
-            <br />
-            <br /> </form>
-            <br /> <button onClick="location.href='CHANGEPROFILE.jsp'"> 개인정보 변경</button>
+            <br /> <button onClick="location.href='main.jsp'"> 확인 </button>
+
             <%
         }
     %>
