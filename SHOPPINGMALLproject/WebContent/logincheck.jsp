@@ -17,7 +17,7 @@
     
     <%
      String strUserName = "dkelab";
-	  String strPassword = "*5DC0701CE78BDE4AA84ADB2C6C033C138383B496";
+	  String strPassword = "dkelab522";
 	 String strConnectString = "jdbc:mysql://155.230.36.58:3306/test";
 	 String DBMS_DRIVER_CLASS_NAME = "com.mysql.cj.jdbc.Driver";
 	 Connection conn = null;
@@ -59,13 +59,16 @@
             // 지금 로그인할 id와 pw를 session에 저장하고
             session.setAttribute("id", user_id); 
             session.setAttribute("pw", user_pw);
-            if(user_id=="admin")
+            if(user_id.equals("admin"))
             {
             	 response.sendRedirect("admin.jsp");    
             	
             }
             // 첫 페이지로 돌려보낸다
+            else
+            {
             response.sendRedirect("login.jsp");    
+            }
         } else {
             // DB에 내가적은 정보가 없다면 경고창을 띄워준다
             %> <script> alert("로그인 실패"); history.go(-1); </script> <%            
