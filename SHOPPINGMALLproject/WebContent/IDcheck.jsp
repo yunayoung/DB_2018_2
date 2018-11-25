@@ -45,7 +45,7 @@
         try {
         	
         
-           
+            System.out.println(his_id);
             Statement st = conn.createStatement();
             String sql = "Select * FROM CUSTOMER where Customer_id = '"+his_id+ "'";
             ResultSet rs = st.executeQuery(sql);
@@ -57,7 +57,8 @@
         	}
         	if(isID)
         	{
-        		%> <script> alert("중복된 아이디가 있습니다");  response.sendRedirect("JOIN.jsp");  ; </script> <%
+        		%> <script> alert("중복된 아이디가 있습니다"); history.go(-1);</script> <%
+        		
         	}
         	else
         	{

@@ -34,13 +34,18 @@
             background-color:skyblue
         }
     </style>
-    <form naem = "userInfo"action="JOINcheck.jsp" method="post" onsubmit="return check_func()">
+    <form action ="IDcheck.jsp">
+            	<br /> 아이디
+                  <input type="text"  name="JOIN_id" >
+             <input type="submit" value="아이디 중복확인"></form>
+    <form name = "userInfo"action="JOINcheck.jsp" method="post" onsubmit="return check_func()">
     <table border="1">
         <tr>
             <th> 아이디 </th> <td> <input type ="text" id="JOIN_id" name="JOIN_id" onkeydown="inputIdChk()">
-                 <input type="button" id = "check_id" value="중복확인" onClick="location.href='IDcheck.jsp'" >
-                    <input type="hidden" id="idDuplication" name ="idDuplication" value="idUncheck" >      
+<!--                  <input type="button" id = "check_id"  onClick="location.href='IDcheck.jsp'" > -->
+                    <input type="hidden" id="idDuplication" name ="idDuplication" value="idUncheck" >     
                     </td>
+   			
         </tr>
         <tr>
             <th> 비밀번호 </th> <td> <input type="password" id="JOIN_pw" name="JOIN_pw"> </td>
@@ -88,7 +93,9 @@
     </table>
     <button> 가입하기 </button>
       </form>
-         <br /> <button onClick="location.href='login.jsp'"> 취소 </button>
+         
+         
+ 
   
     
     <script>
@@ -150,6 +157,6 @@
     }
 
     </script>
- 
+         <br /> <button onClick="location.href='login.jsp'">뒤로가기 </button>
 </body>
 </html>

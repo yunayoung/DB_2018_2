@@ -56,7 +56,7 @@ INSERT INTO SHIPPING VALUES (2,'Right','Gyeongsangdo, Daegu, Jejudo, Busan,Ulsan
 INSERT INTO SHIPPING VALUES (3,'Left','Jeonlado, Chungcheongbugdo,Daejeon,Gwangju,Incheon');
 
 
-
+INSERT INTO CUSTOMER VALUES ('admin','admin','Daegu','010-2085-2479',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO CUSTOMER VALUES ('jaeminjj','1234567','Daegu','010-2085-1341',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO CUSTOMER VALUES ('aaaabbb','1234567','Daegu','010-2085-2473',NULL,NULL,NULL,NULL,NULL);
 INSERT INTO CUSTOMER VALUES ('aaaabbbb','1234567','Seoul',010-2085-2471,NULL,NULL,NULL,NULL,NULL);
@@ -2153,198 +2153,25 @@ SET Soldnum=Soldnum+1, Inum=Inum-1
 WHERE ITEM.Item_id='W849-5912';
 
 
-## Q1.
-select count(*) PRODUCT_NUM
-from ITEM i
-where i.Inum <=20;
+##add_index######################################
 
-## Q2.
-select count(*) customer_num
-from CUSTOMER;
+alter table CUSTOMER add index Customer_idx(Customer_id);
+show index from CUSTOMER;
 
-## Q3.
-select C.Customer_id, count(*) order_num
-from CUSTOMER C, BAG B
-where C.Customer_id=B.Customer_id
-and B.ordered='y'
-group by C.Customer_id
-having count(*) >=7;
+alter table BAG add index Bag_idx(Bag_id);
+show index from BAG;
 
-##Q4.
+alter table SHIPPING add index Shipping_idx(Shipping_id);
+show index from SHIPPING;
 
-select P.Item_id, count(*),BR.Brand_name,S.Sp_name
-from BAG B, PUT_IN P, SUPPLIER S, SUPPLIED_BY CON, ITEM I,BRAND BR
-where B.Bag_id IN(
-	select TB.Bag_id
-	from BAG TB
-	where TB.ordered='y'
-	and TB.when_order >= DATE_ADD(NOW(), INTERVAL -6 MONTH)
-)
+alter table ITEM add index Item_idx(Item_id);
+show index from ITEM;
 
-and B.Bag_id = P.Bag_id
-and P.Item_id=I.item_id
-and I.Brand_id=BR.Brand_id
-and CON.Brand_id=BR.Brand_id
-and CON.Supplier_id=S.Supplier_id
-group by P.Item_id,BR.Brand_name,S.Sp_name
-order by count(*) desc
-limit 3;
+alter table CATEGORY add index Category_idx(Category_id);
+show index from CATEGORY;
 
-##Q5
-select i.Item_id as ITEM_ID,i.Iname as ITEM_NAME
-from BAG b,PUT_IN p,ITEM i,CUSTOMER CD
-where CD.Customer_id IN(
-      select C.Customer_id
-   from CUSTOMER C, BAG d
-   where C.Customer_id=d.Customer_id
-   and d.ordered='y'
-   group by C.Customer_id
-   having count(*) >=7
-)
-and CD.Customer_id = b.Customer_id
-and b.Bag_id=p.Bag_id
-and b.Customer_id = p.Customer_id
-and p.Item_id = i.Item_id
-and b.Ordered = 'y'
-group by i.Item_id,i.Iname
-order by count(*) desc
-limit 1;
+alter table BRAND add index Brand_idx(Brand_id);
+show index from BRAND;
 
-##Q6
-select i.Item_id as ITEM_ID,i.Iname as ITEM_NAME,count(*)*i.Regulated_price as PRICE
-from BAG b,PUT_IN p,ITEM i,CUSTOMER CD
-where CD.Customer_id IN(
-   select C.Customer_id
-   from CUSTOMER C, BAG d
-   where C.Customer_id=d.Customer_id
-   and d.Ordered='n'
-   and d.Total_num =0
-   )
-and CD.Customer_id = b.Customer_id
-and b.Bag_id=p.Bag_id
-and b.Customer_id = p.Customer_id
-and p.Item_id = i.Item_id
-and b.Ordered = 'y'
-group by i.Item_id,i.Iname
-order by count(*)*i.Regulated_price desc
-limit 5;
-
-##Q7
-create view highest as(
-select I.Item_id High_Item_id
-from BAG B, PUT_IN P, ITEM I,CUSTOMER C
-where C.type='r' and B.Customer_id=C.Customer_id
-and B.Bag_id = P.Bag_id
-and P.Item_id=I.item_id
-group by I.Item_id
-order by count(*) desc 
-limit 1);
-
-select B.Brand_name
-from BRAND B, highest H,ITEM I
-where H.High_Item_id=I.Item_id
-and I.Brand_id=B.Brand_id;
-
-create view highest_Supplier as(
-select S.Supplier_id High_Supplier_id
-from highest H, BRAND B, SUPPLIER S, SUPPLIED_BY CON, ITEM I
-where H.High_Item_id=I.Item_id
-and I.Brand_id=B.Brand_id
-and CON.Brand_id=B.Brand_id
-and S.Supplier_id=CON.Supplier_id
-);
-
-create view mytable as(
-select I.Item_id IT_ID,  BR.Brand_name BR_NAME, I.Regulated_price*I.Soldnum SALES, CON.Supplier_id SP
-from highest_Supplier H, SUPPLIED_BY CON, ITEM I, BRAND BR
-where H.High_Supplier_id=CON.Supplier_id
-and I.Brand_id=CON.Brand_id
-and BR.Brand_id=I.Brand_id
-order by  BR.Brand_name, I.Soldnum*I.Regulated_price desc
-);
-
-SELECT a.* FROM mytable AS a
-  LEFT JOIN mytable AS a2 
-    ON a.BR_NAME = a2.BR_NAME AND a.SALES <= a2.SALES
-GROUP BY a.IT_ID, a.SP
-HAVING COUNT(*) <= 1
-ORDER BY a.BR_NAME, a.SALES DESC;
-
-##Q8
-CREATE VIEW MIDDLE1 as 
-select C.C_middle
-from CATEGORY C,SHIPPING SD, BAG B1 , PUT_IN P,ITEM I
-where SD.Shipping_id IN(
-select SD.Shipping_id
-from
-(
-select S.Shipping_id
-from SHIPPING S, BAG B
-where B.Shipping_id=S.Shipping_id
-group by S.Shipping_id
-order by count(*) desc
-limit 1
-)as demp
-)
-and B1.Shipping_id = SD.Shipping_id
-and I.Item_id=P.Item_id
-and P.Bag_id = B1.Bag_id
-and P.Customer_id=B1.Customer_id
-and C.Category_id=I.Category_id
-group by C.C_middle
-order by count(*) desc
-limit 1;
-
-
-select C.C_middle
-from CATEGORY C,SHIPPING SD, BAG B1 , PUT_IN P,ITEM I
-where SD.Shipping_id IN(
-select SD.Shipping_id
-from
-(
-select S.Shipping_id
-from SHIPPING S, BAG B
-where B.Shipping_id=S.Shipping_id
-group by S.Shipping_id
-order by count(*) desc
-limit 1
-)as demp
-)
-and B1.Shipping_id = SD.Shipping_id
-and I.Item_id=P.Item_id
-and P.Bag_id = B1.Bag_id
-and P.Customer_id=B1.Customer_id
-and C.Category_id=I.Category_id
-group by C.C_middle
-order by count(*) desc
-limit 1;
-
-
-
-select C1.Type
-from CUSTOMER C1, BAG B2 , PUT_IN P2, ITEM I2 , MIDDLE1 M,CATEGORY C7
-where C1.Customer_id =B2.Customer_id
-and B2.Bag_id=P2.Bag_id
-and B2.Customer_id = P2.Customer_id
-and P2.Item_id = I2.Item_id
-and I2.Category_id=C7.Category_id
-and C7.C_middle=M.C_middle
-and length(C1.Type)>0
-group by C1.Type
-order by count(*) desc
-limit 1;
-
-#Q9-----------------------------------------
-CREATE VIEW SUM1 as 
-select I.Item_id , sum(P.Item_num) as sum1
-from ITEM I ,BAG B , PUT_IN P
-where I.Item_id = P.Item_id
-and B.Bag_id=P.Bag_id
-and B.Customer_id = P.Customer_id
-and B.Ordered = 'n'
-group by I.Item_id;
-
-select S.Item_id as ITEMTOBUYs
-from ITEM I, SUM1 S
-where I.Inum<S.sum1
-and I.Item_id = S.Item_id;
+alter table SUPPLIER add index Supplier_idx(Supplier_id);
+show index from SUPPLIER;

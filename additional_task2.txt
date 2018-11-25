@@ -1,0 +1,32 @@
+****추가과제2: 트랜잭션에 의한 동시성 제어 구현****
+BUY.jsp에 구현
+구매 버튼을 눌렀을때 만약에 재고가 그사이에 다른 사람에 의하여 재고가 0 이되면
+더이상 구매를 못함
+데이터 베이스 자체에서의 동시성 제어를 위해서 테이블 락 하는 방법을 사용
+
+
+sql="LOCK TABLES ITEM READ";
+자신이 상품 데이터를 읽는 동안 다른 사람들은 데이터를 읽지 못하게한다.
+
+sql="UNLOCK TABLES";
+
+sql="LOCK TABLES ITEM WRITE";
+자신이 상품 재고를 읽고 구매를해 재고를 바꿀시에 다른 사람들은 상품 재고가 몇개인지 못본다 그리고 그 수정후에 바귄 재고를 확인하고 
+sql="UNLOCK TABLES";
+테이블의 락을 다시 풀어주고 다른 사람들이 바뀐 재고의 값을 읽고 사려고 하는 할때 개수가 모자르면 다시 전 페이지로 돌아가게 한다.
+	if(Inum<0)
+		{
+			
+			sql="DELETE FROM PUT_IN WHERE Customer_id ='"+ session.getAttribute("id")+"' AND Bag_id = '"+bagnumber1+"'";
+	  			st.executeUpdate(sql);
+	  			%>
+	    	 <script> alert("재고가 부족합니다"); history.go(-1); </script>
+	          
+		<% 
+		return; 
+		}
+
+exception이 생길시에 장바구니 물건을 다 삭제하고 다시 돌아가게 해준다
+String sql="DELETE FROM PUT_IN WHERE Customer_id ='"+ session.getAttribute("id")+"' AND Bag_id = '"+bagnumber1+"'";
+st.executeUpdate(sql);
+ %> <script> alert("해당 상품의 재고가 부족합니다 다시 구매해주세요"); response.sendRedirect("main.jsp");</script> <%

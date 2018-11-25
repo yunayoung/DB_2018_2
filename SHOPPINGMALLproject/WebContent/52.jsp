@@ -45,7 +45,7 @@
         try{
         Statement st = conn.createStatement();
        
-        String sql = "SELECT Iname FROM ITEM WHERE Category_id='12'";
+        String sql = "SELECT Iname FROM ITEM WHERE Category_id='52'";
        // st.executeUpdate(sql);
        
         ResultSet rs = st.executeQuery(sql);
@@ -58,7 +58,7 @@
                    	</br> 
                         <%= rs.getString(1)%>
                    	<form action="ITEM.jsp" method="Post" name ="frm1">
-            <input type="hidden"  name="name" value="W825-0434"><br>
+            <input type="hidden"  name="name" value="W102-4496"><br>
             <input type="submit" value="아이템보기">
         </form>
                
@@ -75,7 +75,7 @@
                         <%= rs.getString(1)%>
                         
                    	<form action="ITEM.jsp" method="post">
-            <input type="hidden" name="name" value="W836-0316"><br>
+            <input type="hidden" name="name" value="W112-4617"><br>
             <input type="submit" value="아이템보기">
         </form>
                          </br>  아이템
@@ -84,7 +84,7 @@
                         <%= rs.getString(1)%>
                         
                    	<form action="ITEM.jsp" method="post">
-            <input type="hidden"name="name"  value="W839-1050"><br>
+            <input type="hidden"name="name"  value="W144-1028"><br>
             <input type="submit" value="아이템보기">
         </form>
                   </br>  아이템
@@ -93,7 +93,7 @@
                         <%= rs.getString(1)%>
                         
                    	<form action="ITEM.jsp" method="post">
-            <input type="hidden"name="name"  value="W840-0303"><br>
+            <input type="hidden"name="name"  value="W875-7238"><br>
             <input type="submit" value="아이템보기">
         </form>
         

@@ -45,7 +45,7 @@
         try{
         Statement st = conn.createStatement();
        
-        String sql = "SELECT Iname FROM ITEM WHERE Category_id='12'";
+        String sql = "SELECT Iname FROM ITEM WHERE Category_id='23'";
        // st.executeUpdate(sql);
        
         ResultSet rs = st.executeQuery(sql);

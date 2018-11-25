@@ -49,9 +49,11 @@ Statement st = conn.createStatement();
 
 
 	
-String sql = "SELECT Item_id, Iname, Regulated_price, Inum FROM ITEM WHERE Item_id='"+value+"'";
+String sql = "SELECT Item_id, Iname, Regulated_price, Inum FROM ITEM WHERE Item_id ='"+value+"'";
 ResultSet rs = st.executeQuery(sql);
-while(rs.next()) { %>
+String a=null;
+while(rs.next()) {
+	a=rs.getString(1);%>
 	 <tr>
      <th>
          아이템넘버
@@ -96,9 +98,11 @@ while(rs.next()) { %>
  <form action ="Shoppingbag.jsp" method="post">
             	<br />
                 <br />   <input type="hidden" value="<%=rs.getString(1) %>"  name="itemname" ><br>
+                 <br />아이템 개수  <input type="text"   name="num" ><br>
              <input type="submit" value="장바구니에 넣기">
              </form>
- </br>
+ </br> <br /> <button onClick="location.href='main.jsp'"> 뒤로가기 </button>
+ 
   </br>
    </br>
  <%

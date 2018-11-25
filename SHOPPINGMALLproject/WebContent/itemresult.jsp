@@ -12,6 +12,7 @@
 <title>Insert title here</title>
 </head>
 <body>
+ </br><button onClick="location.href='main.jsp'"> 메인으로 돌아가기 </button>
 <% 
 String value=request.getParameter("itemname");
 String strUserName = "dkelab";
@@ -43,18 +44,14 @@ Connection conn = null;
 
 	try{
 	  	
-	      String sql = "SELECT Item_id, Iname, Regulated_price, Inum FROM ITEM WHERE Iname='"+value+"'";
+	      String sql = "SELECT Item_id, Iname, Regulated_price, Inum FROM ITEM WHERE Iname LIKE '%"+value+"%'";
 	      ResultSet rs = st.executeQuery(sql);
 	      while(rs.next()) { %>
 	      	 <tr>
 	           <th>
 	               아이템넘버
 	           </th>
-	           <td> <%if(rs.getString(1)==null||rs.getString(1)=="")
-	           {
-	           %>
-	           alert("장바구니에 넣었습니다");
-	          <% }%>
+	          
 	               <%= rs.getString(1) %>
 	          
 	           </td>
@@ -91,13 +88,15 @@ Connection conn = null;
 	           </td>
 	           
 	       </tr>
+	       
 	   <form action ="Shoppingbag.jsp" method="post">
-            	<br /> alert("장바구니에 넣었습니다");
-                <br />   <input type="hidden" value="<%=rs.getString(1) %>"  name="itemname" ><br>
+            	<br /> 
+            	 <br />아이템 개수  <input type="text"   name="num" ><br>
+                <br />   <input type="hidden" value="<%=rs.getString(1) %>"  name="itemname" >
              <input type="submit" value="장바구니에 넣기">
              </form>
-	       </br>
-	    
+	      
+	   
 	       <%
 	      }
 

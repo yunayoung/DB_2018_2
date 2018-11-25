@@ -105,23 +105,24 @@
             st.executeUpdate(sql);
        
             // 회원가입에 성공하였으면 첫 페이지로 보낸다
-               %> <script> 
+               
         	   // document.getElementById("").value = opener.document.userInfo.JOIN_id.value;
         	    //document.getElementById("JOIN_id").value = opener.document.userInfo.id.value;
         	    //opener.document.getElementById("idDuplication").value ="idCheck";
         	    int number=3;
-        	    if(address=="DAEGU")
+        	    if(address=="DAEGU"||address=="Daegu"||address=="Jejudo")
         	    	number=2;
         	    if(address=="SEOUL")
         	    	number=1;
-        	    if(address=="DAEJEON")
+        	    if(address=="DAEJEON"||address=="Daejeon")
         	    	number=3;
         	    
         	    
         	  sql="INSERT INTO BAG VALUES(1,0,'n',NULL,'"+his_id+"',"+number+")";
         	  st.executeUpdate(sql);
-        	    alert("회원가입 완료되었습니다 로그인 하세요"); 
-        	    </script> <%  
+        	  %>  
+        	  alert("회원가입 완료되었습니다 로그인 하세요"); 
+        	   <% 
             response.sendRedirect("login.jsp");        
             
         } catch (Exception e) {       

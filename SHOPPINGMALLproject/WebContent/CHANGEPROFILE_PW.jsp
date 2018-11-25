@@ -50,6 +50,6 @@
         }
     }    
     </script>
- 
+    <br /> <button onClick="location.href='PROFILE.jsp'"> 뒤로가기 </button>
 </body>
 </html>

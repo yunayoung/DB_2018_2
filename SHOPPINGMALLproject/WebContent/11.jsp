@@ -75,7 +75,7 @@
                         <%= rs.getString(1)%>
                         
                    	<form action="ITEM.jsp" method="post">
-            <input type="hidden" name="name" value="W835-0731"><br>
+            <input type="hidden" name="name" value="W836-0731"><br>
             <input type="submit" value="아이템보기">
         </form>
                          </br>  아이템
