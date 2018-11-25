@@ -110,11 +110,11 @@
         	    //document.getElementById("JOIN_id").value = opener.document.userInfo.id.value;
         	    //opener.document.getElementById("idDuplication").value ="idCheck";
         	    int number=3;
-        	    if(address=="DAEGU"||address=="Daegu"||address=="Jejudo")
+        	    if(address.equals("DAEGU")||address.equals("Daegu")||address.equals("Jejudo")||address.equals("Jejudo"))
         	    	number=2;
-        	    if(address=="SEOUL")
+        	    if(address.equals("Seoul")||address.equals("SEOUL")||address.equals("Gyeonggido"))
         	    	number=1;
-        	    if(address=="DAEJEON"||address=="Daejeon")
+        	    if(address.equals("Daejeon")||address.equals("DAEJEON")||address.equals("Jeonlado")||address.equals("Incheon")||address.equals("Chungcheongbugdo"))
         	    	number=3;
         	    
         	    

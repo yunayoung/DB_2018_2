@@ -80,7 +80,7 @@
                 
                 <tr>
                     <th>
-                        취미
+                        주소
                     </th>
                     <td><%= rs.getString(3) %>
                     </td>

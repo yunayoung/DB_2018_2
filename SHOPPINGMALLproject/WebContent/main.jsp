@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR" import="java.sql.*" %>
+    pageEncoding="EUC-KR" import="java.sql.*"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,12 +12,10 @@
             <%
             out.println("아이디-"+session.getAttribute("id"));
             %>
-        
             <br /> <button> 로그아웃 </button>
             <br />
             <br /> </form>
-      
-           	<%
+	<%
 		String strUserName = "dkelab";
 		String strPassword = "dkelab522";
 		String strConnectString = "jdbc:mysql://155.230.36.58:3306/test";
@@ -61,7 +59,7 @@
     	check=Integer.parseInt(rs.getString(1));
     }
     
-    if(check >0 && check <= 2){%>
+    if(check==1){%>
     
     	<br><br>
         <b><font size="3" color="gray"> 신규회원, <%=session.getAttribute("id") %> 님! 반갑습니다.
@@ -82,80 +80,17 @@
         type_c = rs.getString(3); 
         address= rs.getString(4);
         }
-      %>
-      <font color="blue">"<%=type_c %>"타입의 Top3 물품 </font> 
-      <%   
-        query = "select I.Item_id, I.Iname "+
-        		"from BAG B, PUT_IN P, ITEM I,CUSTOMER C "+
-        		"where C.type='"+type_c+"' "+
-        		"and B.Customer_id=C.Customer_id "+
-        		"and B.ordered = 'y' "+
-        		"and B.Bag_id = P.Bag_id "+
-        		"and P.Item_id=I.item_id "+
-        		"group by I.Item_id, I.Iname "+
-        		"order by count(*) desc "+
-        		"limit 3";
-        
-        pstmt=conn.prepareStatement(query);
-        rs= pstmt.executeQuery();
-        out.println("<table border = \"1\">");
-        out.println("<th>"+"품별번호"+"</th>");
-        out.println("<th>"+" 품명 "+"</th>");
-        while(rs.next()){
-        	
-        	out.println("<tr>");
-        	out.println("<td>"+rs.getString(1)+"</td>");
-        	out.println("<td>"+rs.getString(2)+"</td>");
-        	out.println("</tr>");
-        	
-        }
-        		
-        out.println("</table>"); 
         %> 
-         <font color="blue">"<%=sex %>"타입의 Top3 물품 </font> 
-        <%  
-        query = "select I.Item_id, I.Iname "+
-        		"from BAG B, PUT_IN P, ITEM I,CUSTOMER C "+
-        		"where C.sex='"+sex+"' "+
-        		"and B.Customer_id=C.Customer_id "+
-        		"and B.ordered = 'y' "+
-        		"and B.Bag_id = P.Bag_id "+
-        		"and P.Item_id=I.item_id "+
-        		"group by I.Item_id, I.Iname "+
-        		"order by count(*) desc "+
-        		"limit 3";
-        
-        pstmt=conn.prepareStatement(query);
-        rs= pstmt.executeQuery();
-        out.println("<table border = \"1\">");
-        out.println("<th>"+"품별번호"+"</th>");
-        out.println("<th>"+" 품명 "+"</th>");
-        while(rs.next()){
-        	
-        	out.println("<tr>");
-        	out.println("<td>"+rs.getString(1)+"</td>");
-        	out.println("<td>"+rs.getString(2)+"</td>");
-        	out.println("</tr>");
-        	
-        }
-        		
-        out.println("</table>");
-        
-        %> 
-        <font color="blue">"<%=age %>" 비슷한 연령층 Top3 물품 </font> 
+        <font color="blue">전체 매출 Top3 물품</font> 
        <%  
-       int a1=0,a2=0;
-       a1 = Integer.parseInt(age)-5; a2= Integer.parseInt(age)+5;
        query = "select I.Item_id, I.Iname "+
-       		"from BAG B, PUT_IN P, ITEM I,CUSTOMER C "+
-       		"where C.age > "+ Integer.toString(a1) +" and C.age < "+ Integer.toString(a2)+
-       		" and B.Customer_id=C.Customer_id "+
-       		"and B.ordered = 'y' "+
-       		"and B.Bag_id = P.Bag_id "+
-       		"and P.Item_id=I.item_id "+
-       		"group by I.Item_id, I.Iname "+
-       		"order by count(*) desc "+
-       		"limit 3";
+             "from BAG B, PUT_IN P, ITEM I "+
+             "where B.ordered = 'y' "+
+             "and B.Bag_id = P.Bag_id "+
+             "and P.Item_id=I.item_id "+
+             "group by I.Item_id, I.Iname "+
+             "order by count(*) desc "+
+             "limit 3";
        
        pstmt=conn.prepareStatement(query);
        rs= pstmt.executeQuery();
@@ -163,18 +98,20 @@
        out.println("<th>"+"품별번호"+"</th>");
        out.println("<th>"+" 품명 "+"</th>");
        while(rs.next()){
-       	
-       	out.println("<tr>");
-       	out.println("<td>"+rs.getString(1)+"</td>");
-       	out.println("<td>"+rs.getString(2)+"</td>");
-       	out.println("</tr>");
-       	
+          
+          out.println("<tr>");
+          out.println("<td>"+rs.getString(1)+"</td>");
+          out.println("<td>"+rs.getString(2)+"</td>");
+          out.println("</tr>");
+          
        }
-       		
+             
        out.println("</table>");
        
        %> 
-       <font color="blue">"<%=sex %>"주소의 Top3 물품 </font> 
+      
+  
+       <font color="blue">"<%=address %>"주소의 Top3 물품 </font> 
       <%  
       query = "select I.Item_id, I.Iname "+
       		"from BAG B, PUT_IN P, ITEM I,CUSTOMER C "+
@@ -206,7 +143,8 @@
     }
     	
 	%>
-              
+                  
+             <br />
               <br />검색
               <form action ="itemresult.jsp">
             	<br />
@@ -223,7 +161,7 @@
             	<optgroup label="중분류-Faceshield">
             		<option value="11" name="11">Goggle</option>
             		<option value="12"name="11">Soundproof</option>
-            		<option value="13"name="11">Glasses</option>
+            		<option value="13"name="11">Soundproof</option>
             		</optgroup>
             	 </optgroup>
             	 <optgroup label="중분류-Safetyshoes">
@@ -265,8 +203,7 @@
             </form>
 			<br /> 
 			<br /> 
-            <br /> <button onClick="location.href='PROFILE.jsp'"> 개인정보 변경</button>
-            <button onClick="location.href='myorder_list.jsp'"> 구매내역 조회</button>
-            
+            <br /> <button onClick="location.href='PROFILE.jsp'"> 개인정보 변경</button> 
+             	   <button onClick="location.href='myorder_list.jsp'"> 구매내역 조회</button>
 </body>
 </html>

@@ -410,6 +410,10 @@
       <br />재고개수 <input name="item_num" type="text"> 
       <br /><input type = "submit" value="재고확보" > <input type = "button" value ="취소">
       </form>
-   
+     <br /> <form action="logout.jsp" method="post">
+            <%
+            out.println("아이디-"+session.getAttribute("id"));
+            %>
+            <br /> <button> 로그아웃 </button>
 </body>
 </html>

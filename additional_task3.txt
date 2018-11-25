@@ -14,21 +14,35 @@ and b.When_order is NULL
 **************************************
 
 만약 신규회원이라면, 신규회원의 정보에 적합한 추천상품을 보여준다.
-먼저 신규회원의 sex, age, type, address를 select한다.
+먼저 신규회원의 address를 select한다.
 **************************************
 select sex, age, type, address 
 from CUSTOMER 
 where Customer_id = session.getAttribute("id")
 **************************************
 
-같은 타입(도매, 소매, 기타, null)의 고객들중 가장 많이 산 물품 Top3를 보여준다.
+전체 고객들중 가장 많이 산 물품 Top3를 보여준다.
+장바구니 ordered가 "y"이고 이 장바구니내 담은 물건들을 PUT_IN으로 확인한다.
+이후 이 PUT_IN 내 물건들을 group by 하여 가장 누적된 수가 많은 순서로 3 개를 뽑는다.
+**************************************
+select I.Item_id, I.Iname
+from BAG B, PUT_IN P, ITEM I
+where B.ordered = 'y' 
+and B.Bag_id = P.Bag_id 
+and P.Item_id=I.item_id 
+group by I.Item_id, I.Iname 
+order by count(*) desc 
+limit 3
+**************************************
+
+같은 주소지의 고객들중 가장 많이 산 물품 Top3를 보여준다.
 고객의 type_c와 일치한 고객의 모든 장바구니를 살피고,
 장바구니 ordered가 "y"이고 이 장바구니내 담은 물건들을 PUT_IN으로 확인한다.
 이후 이 PUT_IN 내 물건들을 group by 하여 가장 누적된 수가 많은 순서로 3 개를 뽑는다.
 **************************************
 select I.Item_id, I.Iname
 from BAG B, PUT_IN P, ITEM I,CUSTOMER C
-where C.type=type_c
+where C.type=address
 and B.Customer_id=C.Customer_id 
 and B.ordered = 'y' 
 and B.Bag_id = P.Bag_id 
@@ -37,56 +51,4 @@ group by I.Item_id, I.Iname
 order by count(*) desc 
 limit 3
 **************************************
-
-같은 성(female, male)인 고객들중 가장 많이 산 물품 Top3를 보여준다.
-고객의 sex와 일치한 고객의 모든 장바구니를 살피고,
-장바구니 ordered가 "y"이고 이 장바구니내 담은 물건들을 PUT_IN으로 확인한다.
-이후 이 PUT_IN 내 물건들을 group by 하여 가장 누적된 수가 많은 순서로 3 개를 뽑는다.
-**************************************
-select I.Item_id, I.Iname
-from BAG B, PUT_IN P, ITEM I,CUSTOMER C
-where C.sex=sex
-and B.Customer_id=C.Customer_id 
-and B.ordered = 'y' 
-and B.Bag_id = P.Bag_id 
-and P.Item_id=I.item_id 
-group by I.Item_id, I.Iname 
-order by count(*) desc 
-limit 3
-**************************************
-비슷한 연령층의 고객들중 가장 많이 산 물품 Top3를 보여준다.
-고객의 나이에 +5부터 -5까지의 고객의 모든 장바구니를 살피고,
-장바구니 ordered가 "y"이고 이 장바구니내 담은 물건들을 PUT_IN으로 확인한다.
-이후 이 PUT_IN 내 물건들을 group by 하여 가장 누적된 수가 많은 순서로 3 개를 뽑는다.
-a1 = age-5, a2=age+5
-**************************************
-select I.Item_id, I.Iname
-from BAG B, PUT_IN P, ITEM I,CUSTOMER C
-where C.age > a1 and C.age < a2
-and B.Customer_id=C.Customer_id 
-and B.ordered = 'y' 
-and B.Bag_id = P.Bag_id 
-and P.Item_id=I.item_id 
-group by I.Item_id, I.Iname 
-order by count(*) desc 
-limit 3
-**************************************
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

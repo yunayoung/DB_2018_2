@@ -101,8 +101,8 @@ System.out.println(num);
 	    
 		%>        
        <br>
-        <input type="button" onclick = "history.go(-1);" value="확인">
-       
+        <input type="button" onClick="location.href='admin.jsp'" value="확인">
+  
     </div>
 
     

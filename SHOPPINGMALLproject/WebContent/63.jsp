@@ -13,9 +13,9 @@
 </head>
 <body>
  
-    <h1> 개인정보변경 </h1>
+
     <%
-        out.println(session.getAttribute("id") + " 님 개인정보");        
+    out.println("아이템 정보");      
     String strUserName = "dkelab";
 	  String strPassword = "dkelab522";
 	 String strConnectString = "jdbc:mysql://155.230.36.58:3306/test";
