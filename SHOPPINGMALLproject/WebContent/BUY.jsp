@@ -57,7 +57,8 @@ Connection conn = null;
 		{
 			shippingid=Integer.parseInt(rs.getString(1));
 		}
-		
+		sql="START TRANSACTION";
+		 rs=st.executeQuery(sql);
 		sql = "SELECT Item_id, Item_num from PUT_IN where Bag_id IN(select Bag_id from BAG where Ordered='n' and Customer_id='"+session.getAttribute("id")+"')and Customer_id='"+session.getAttribute("id")+"'";
 		rs= st.executeQuery(sql);
 		System.out.println("2");
@@ -74,10 +75,12 @@ Connection conn = null;
 			
 		}
 		how--;
-		sql="LOCK TABLES ITEM READ";
-		st.executeUpdate(sql);
+		//sql="LOCK TABLES ITEM READ";
+		//st.executeUpdate(sql);
+	
 		while(how>0)
 		{
+		// 재고량 각각	찾기
 		sql="SELECT Inum, Soldnum from ITEM where Item_id='"+name[how]+"'";
 		 rs=st.executeQuery(sql);
 		System.out.println("3");
@@ -103,16 +106,19 @@ Connection conn = null;
 			
 			sql="DELETE FROM PUT_IN WHERE Customer_id ='"+ session.getAttribute("id")+"' AND Bag_id = '"+bagnumber1+"'";
 	  			st.executeUpdate(sql);
+	  			sql="commit";
+	  			 rs=st.executeQuery(sql);
 	  			%>
-	    	 <script> alert("재고가 부족합니다"); history.go(-1); </script>
-	          
+	    	 <script> alert("재고가 부족합니다"); response.sendRedirect("main.jsp");  </script>
+	            <br /> <button onClick="location.href='main.jsp'"> 상품 재고가 부족합니다 다시 구매해주세요 확인</button>
 		<% 
+		System.out.println("finish");
 		return; 
 		}
-		sql="UNLOCK TABLES";
-		st.executeUpdate(sql);
-		sql="LOCK TABLES ITEM WRITE";
-		st.executeUpdate(sql);
+		//sql="UNLOCK TABLES";
+		//st.executeUpdate(sql);
+		//sql="LOCK TABLES ITEM WRITE";
+		//st.executeUpdate(sql);
 		sql="UPDATE ITEM SET Inum = "+Inum+" where Item_id = '"+name[how]+"'";
 		//UPDATE ITEM SET Inum=20 where Item_id ='W836-0731';
 
@@ -120,11 +126,15 @@ Connection conn = null;
 		System.out.println("4");
 		sql="UPDATE ITEM SET Soldnum = "+Soldnum+" where Item_id = '"+name[how]+"'";
 		  st.executeUpdate(sql);
+		
+	
 		System.out.println("4");
-		sql="UNLOCK TABLES";
-		st.executeUpdate(sql);
+		//sql="UNLOCK TABLES";
+		//st.executeUpdate(sql);
 		how--;
 		}
+		  sql="commit";
+		  st.executeUpdate(sql);
 		System.out.println("나가");
 		sql="UPDATE BAG SET ordered = 'y'  where bag_id = "+bagnumber+" AND customer_id ='"+ session.getAttribute("id")+"'";
 		//UPDATE BAG SET ordered = 'n'  WHERE customer_id ='1234' AND bag_id =1;
@@ -146,7 +156,7 @@ Connection conn = null;
 	    	  	String sql="DELETE FROM PUT_IN WHERE Customer_id ='"+ session.getAttribute("id")+"' AND Bag_id = '"+bagnumber1+"'";
 	  			st.executeUpdate(sql);
 	    	    %> <script> alert("해당 상품의 재고가 부족합니다 다시 구매해주세요"); response.sendRedirect("main.jsp");</script> <%
-	    	
+	    	  return;
 	      }  
 %>
    <br /> <button onClick="location.href='main.jsp'"> 구매 완료 확인</button>

@@ -104,7 +104,9 @@ Connection conn = null;
 	                  ",'" + value+
 	                   "',"+number2+",'" + session.getAttribute("id")+
 	                  "')";
+			
 	          st.executeUpdate(sql);
+	          
 	  		System.out.println("4");
 	          break;
 		    }

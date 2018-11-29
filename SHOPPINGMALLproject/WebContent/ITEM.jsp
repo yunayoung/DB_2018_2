@@ -47,9 +47,10 @@ try{
 Statement st = conn.createStatement();
 
 
-
+String sql="commit";
+st.executeUpdate(sql);
 	
-String sql = "SELECT Item_id, Iname, Regulated_price, Inum FROM ITEM WHERE Item_id ='"+value+"'";
+sql = "SELECT Item_id, Iname, Regulated_price, Inum FROM ITEM WHERE Item_id ='"+value+"'";
 ResultSet rs = st.executeQuery(sql);
 String a=null;
 while(rs.next()) {

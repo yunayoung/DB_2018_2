@@ -161,7 +161,7 @@
             	<optgroup label="중분류-Faceshield">
             		<option value="11" name="11">Goggle</option>
             		<option value="12"name="11">Soundproof</option>
-            		<option value="13"name="11">Soundproof</option>
+            		<option value="13"name="11">Glasses</option>
             		</optgroup>
             	 </optgroup>
             	 <optgroup label="중분류-Safetyshoes">
